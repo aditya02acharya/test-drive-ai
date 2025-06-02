@@ -17,6 +17,22 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    "crewai>=0.1.6",
+    "fastapi>=0.115.9",
+    "pandas>=2.2.3",
+    "plotly>=6.1.2",
+    "pydantic>=2.11.5",
+    "pydantic-settings>=2.9.1",
+    "python-dotenv>=1.1.0",
+    "python-multipart>=0.0.20",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
+    "sse-starlette>=2.1.3",
+    "sseclient-py>=1.8.0",
+    "streamlit>=1.45.1",
+    "uvicorn[standard]>=0.34.2",
+]
 
 [project.urls]
 Homepage = "https://aditya02acharya.github.io/test-drive-ai/"
@@ -114,4 +130,3 @@ skip_empty = true
 [tool.coverage.run]
 branch = true
 source = ["test_drive_ai"]
-
