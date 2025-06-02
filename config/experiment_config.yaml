@@ -1,0 +1,313 @@
+experiment:
+  # Basic Information
+  name: "Bank Portal Migration Campaign"
+  description: "Test interventions to migrate business customers from legacy to new portal"
+  owner: "Digital Transformation Team"
+  start_date: "31-05-2025"
+  duration: "90 days"
+
+  # Entity Definition
+  entities:
+    type: "business_customers"
+    total_population: 1700
+
+    segments:
+      - id: "small_business"
+        name: "Small Business"
+        size: 1000
+        attributes:
+          revenue_range: "£50K-£500K"
+          employee_count: "1-10"
+          industry_distribution:
+            retail: 0.40
+            services: 0.35
+            manufacturing: 0.25
+          tech_characteristics:
+            savviness: "low-medium"
+            digital_adoption_score: 3.5  # out of 10
+            primary_user_age: "45-60"
+          portal_behavior:
+            login_frequency: "2-3 times/week"
+            feature_usage: ["payments", "statements"]
+            session_duration: "5-10 minutes"
+          pain_points:
+            - "Complex navigation"
+            - "No mobile app"
+            - "Slow transaction processing"
+
+      - id: "medium_business"
+        name: "Medium Business"
+        size: 500
+        attributes:
+          revenue_range: "£500K-£10M"
+          employee_count: "11-100"
+          industry_distribution:
+            services: 0.30
+            manufacturing: 0.30
+            technology: 0.20
+            healthcare: 0.20
+          tech_characteristics:
+            savviness: "medium-high"
+            digital_adoption_score: 6.5
+            primary_user_age: "35-50"
+          portal_behavior:
+            login_frequency: "daily"
+            feature_usage: ["payments", "reports", "transfers", "payroll"]
+            session_duration: "15-30 minutes"
+          pain_points:
+            - "Limited API access"
+            - "Poor reporting tools"
+            - "No batch operations"
+
+      - id: "large_enterprise"
+        name: "Large Enterprise"
+        size: 200
+        attributes:
+          revenue_range: ">£10M"
+          employee_count: ">100"
+          industry_distribution:
+            manufacturing: 0.35
+            technology: 0.25
+            finance: 0.20
+            healthcare: 0.20
+          tech_characteristics:
+            savviness: "high"
+            digital_adoption_score: 8.5
+            primary_user_age: "30-45"
+          portal_behavior:
+            login_frequency: "multiple daily"
+            feature_usage: ["all features", "API", "custom workflows"]
+            session_duration: "continuous/integrated"
+          pain_points:
+            - "No enterprise features"
+            - "Limited customization"
+            - "Poor ERP integration"
+
+  # Current State Baseline
+  current_state:
+    system:
+      name: "Legacy Portal v2.3"
+      launch_year: 2015
+      technology: "On-premise Java application"
+      mobile_support: false
+      api_available: false
+
+    metrics:
+      overall_migration_rate: 0.05  # 5% organic migration
+      user_satisfaction_score: 6.2   # out of 10
+      monthly_support_tickets: 450
+      average_task_completion_time: "8.5 minutes"
+      feature_adoption_rate: 0.35
+
+    segment_specific:
+      small_business:
+        migration_rate: 0.03
+        satisfaction: 5.8
+        support_tickets_per_100: 35
+      medium_business:
+        migration_rate: 0.06
+        satisfaction: 6.2
+        support_tickets_per_100: 28
+      large_enterprise:
+        migration_rate: 0.08
+        satisfaction: 6.8
+        support_tickets_per_100: 22
+
+  # Desired Future State
+  desired_state:
+    system:
+      name: "NextGen Portal"
+      technology: "Cloud-native microservices"
+      mobile_support: true
+      api_available: true
+      key_features:
+        - "Real-time processing"
+        - "Advanced analytics"
+        - "Mobile app"
+        - "Open API"
+        - "AI-powered insights"
+
+    target_metrics:
+      migration_rate: 0.80          # 80% migration target
+      user_satisfaction_score: 8.5
+      monthly_support_tickets: 150
+      average_task_completion_time: "3 minutes"
+      feature_adoption_rate: 0.75
+
+  # Constraints and Requirements
+  constraints:
+    budget:
+      total: 100000  # USD
+      allocation:
+        marketing: 0.30
+        incentives: 0.40
+        support: 0.20
+        technology: 0.10
+
+    operational:
+      - "No service disruption during migration"
+      - "Maintain 99.9% uptime"
+      - "Preserve all historical data"
+      - "Ensure SOC2 compliance throughout"
+
+    timeline:
+      - phase_1: "30 days - Early adopter program"
+      - phase_2: "30 days - Main migration push"
+      - phase_3: "30 days - Completion and optimization"
+
+    resources:
+      dedicated_staff: 5
+      support_hours: "24/7 for enterprise, business hours for others"
+
+  # Intervention Parameters
+  interventions:
+    generation:
+      count: 2  # Generate 5 interventions if not provided
+      types_allowed:
+        - "financial"     # Incentives, discounts
+        - "educational"   # Training, webinars
+        - "technical"     # Tools, automation
+        - "social"        # Peer influence, champions
+        - "support"       # Hand-holding, concierge
+        - "hybrid"        # Combination approaches
+
+      constraints:
+        - "Must be segment-appropriate"
+        - "Should leverage behavioral economics"
+        - "Consider implementation complexity"
+        - "Account for network effects"
+
+    # Pre-defined interventions (optional)
+    defined:
+      - id: "early_bird_special"
+        name: "Early Bird Incentive Program"
+        type: "financial"
+        description: |
+          Offer progressive incentives for early migration:
+          - Month 1: 6 months free + $500 credit
+          - Month 2: 3 months free + $250 credit
+          - Month 3: 1 month free + $100 credit
+        target_segments: ["all"]
+        estimated_cost: 35000
+
+      - id: "white_glove"
+        name: "White Glove Migration Service"
+        type: "support"
+        description: |
+          Dedicated migration specialist assigned to each account:
+          - Full data migration assistance
+          - Custom training sessions
+          - 90-day post-migration support
+        target_segments: ["large_enterprise", "medium_business"]
+        estimated_cost: 40000
+
+  # Success Metrics
+  metrics:
+    primary:
+      - id: "migration_rate"
+        name: "Migration Rate"
+        formula: "migrated_accounts / total_accounts"
+        target: 0.80
+        measurement_frequency: "weekly"
+
+    secondary:
+      - id: "time_to_migrate"
+        name: "Average Time to Migration"
+        unit: "days"
+        target: 21
+        direction: "minimize"
+
+      - id: "satisfaction_delta"
+        name: "Satisfaction Improvement"
+        formula: "new_satisfaction - old_satisfaction"
+        target: 2.3
+        direction: "maximize"
+
+      - id: "feature_adoption"
+        name: "New Feature Adoption Rate"
+        formula: "users_using_new_features / migrated_users"
+        target: 0.75
+        measurement_frequency: "monthly"
+
+      - id: "support_reduction"
+        name: "Support Ticket Reduction"
+        formula: "(old_tickets - new_tickets) / old_tickets"
+        target: 0.67
+        direction: "maximize"
+
+    segment_specific:
+      small_business:
+        priority_metric: "ease_of_migration"
+        success_threshold: 0.75
+      medium_business:
+        priority_metric: "feature_adoption"
+        success_threshold: 0.80
+      large_enterprise:
+        priority_metric: "api_utilization"
+        success_threshold: 0.90
+
+  # Simulation Parameters
+  simulation:
+    monte_carlo_runs: 50
+    confidence_level: 0.95
+
+    behavioral_modeling:
+      adoption_curve: "rogers"  # Rogers' Diffusion of Innovation
+      network_effects: true
+      peer_influence_factor: 0.25
+
+    temporal_factors:
+      seasonality:
+        - month: "December"
+          factor: 0.7  # Lower adoption during holidays
+        - month: "January"
+          factor: 1.3  # Higher adoption, new budgets
+
+      day_of_week_effects:
+        monday: 1.2
+        tuesday: 1.1
+        wednesday: 1.0
+        thursday: 1.0
+        friday: 0.8
+
+    variance_parameters:
+      response_rate_std: 0.15
+      satisfaction_std: 0.8
+      time_to_migrate_std: 7  # days
+
+  # Reporting Requirements
+  output:
+    format: "comprehensive"
+
+    sections:
+      - executive_summary:
+          max_length: "1 page"
+          include: ["top_intervention", "roi_analysis", "risk_factors"]
+
+      - detailed_analysis:
+          by_intervention: true
+          by_segment: true
+          statistical_details: true
+
+      - implementation_guide:
+          timeline: "gantt_chart"
+          resource_allocation: true
+          risk_mitigation: true
+
+      - appendices:
+          - "Statistical methodology"
+          - "Behavioral assumptions"
+          - "Sensitivity analysis"
+
+    visualizations:
+      - "Migration timeline forecast"
+      - "Segment response heatmap"
+      - "Cost-benefit curves"
+      - "Risk probability matrix"
+
+    delivery:
+      format: ["pdf", "interactive_dashboard"]
+      stakeholders:
+        - "executive_team@bank.com"
+        - "digital_transformation@bank.com"
+        - "customer_success@bank.com"
