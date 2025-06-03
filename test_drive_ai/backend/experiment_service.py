@@ -123,15 +123,21 @@ class ExperimentService:
         """Get a specific experiment by ID"""
         return self.experiments.get(experiment_id)
 
-    def create_experiment_run(self, experiment_id: str) -> ExperimentRun:
-        """Create a new experiment run"""
+    def create_experiment_run(
+        self, experiment_id: str, custom_parameters: Optional[dict[str, Any]] = None
+    ) -> ExperimentRun:
+        """Create a new experiment run with optional custom parameters"""
         run = ExperimentRun(
             run_id=str(uuid.uuid4()),
             experiment_id=experiment_id,
             status=ExperimentStatus.PENDING,
             started_at=datetime.now(UTC),
+            custom_parameters=custom_parameters,
         )
         self.active_runs[run.run_id] = run
+        print(f"Created run {run.run_id} for experiment {experiment_id}")
+        if custom_parameters:
+            print(f"Custom parameters: {custom_parameters}")
         return run
 
     def update_run_status(

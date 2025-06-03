@@ -2,6 +2,7 @@ import streamlit as st
 
 from test_drive_ai.frontend.components.dashboard import render_dashboard
 from test_drive_ai.frontend.components.experiment_card import render_experiment_card
+from test_drive_ai.frontend.components.experiment_form import render_experiment_form
 from test_drive_ai.frontend.components.status_tracker import render_status_tracker
 from test_drive_ai.frontend.services.api_client import APIClient
 
@@ -67,9 +68,10 @@ with st.sidebar:
         "with real-time status updates and comprehensive result visualization."
     )
 
+# Main content area
 if not st.session_state.show_results:
-    col1, col2 = st.columns([2, 1])
-    with col1:
+    # Experiment selection view
+    if not st.session_state.selected_experiment:
         st.markdown('<div class="section-header">Select an Experiment</div>', unsafe_allow_html=True)
 
         # Fetch experiments
@@ -78,39 +80,59 @@ if not st.session_state.show_results:
         if not experiments:
             st.warning("No experiments available. Please check the backend connection.")
         else:
-            for experiment in experiments:
-                is_selected = (
-                    st.session_state.selected_experiment
-                    and st.session_state.selected_experiment["id"] == experiment["id"]
-                )
+            # Display experiment cards in a responsive grid
+            # Add some styling for the grid
+            st.markdown(
+                """
+            <style>
+            .experiment-grid {
+                margin-top: 20px;
+            }
+            </style>
+            """,
+                unsafe_allow_html=True,
+            )
 
-                if render_experiment_card(experiment, selected=is_selected):
-                    st.session_state.selected_experiment = experiment
-                    st.rerun()
-    with col2:
-        if st.session_state.selected_experiment:
-            st.markdown('<div class="section-header">Experiment Details</div>', unsafe_allow_html=True)
+            # Create columns for cards
+            num_cols = 2 if len(experiments) > 1 else 1
+            cols = st.columns(num_cols)
 
-            experiment = st.session_state.selected_experiment
+            for i, exp in enumerate(experiments):
+                with cols[i % num_cols]:
+                    if render_experiment_card(exp, selected=False, key_prefix=f"main_{i}_"):
+                        st.session_state.selected_experiment = exp
+                        st.rerun()
 
-            st.markdown("### Configuration")
-            config = experiment["config"]
-            st.json({
-                "Parameters": config["parameters"],
-            })
+    else:
+        # Experiment configuration view
+        exp = st.session_state.selected_experiment
 
-            st.markdown("### Actions")
-            if st.button(
-                "🚀 Run Experiment",
-                use_container_width=True,
-                type="primary",
-                disabled=st.session_state.current_run is not None,
-            ):
-                # Start the experiment
-                run = api_client.run_experiment(experiment["id"])
-                if run:
-                    st.session_state.current_run = run
-                    st.rerun()
+        # Back button
+        col1, col2, col3 = st.columns([1, 6, 1])
+        with col1:
+            if st.button("← Back", use_container_width=True):
+                st.session_state.selected_experiment = None
+                st.rerun()
+
+        with col2:
+            st.markdown(f'<div class="section-header">{exp["name"]}</div>', unsafe_allow_html=True)
+
+        # Show the configuration form
+        form_data = render_experiment_form(exp)
+
+        if form_data:
+            # User submitted the form, run the experiment with custom parameters
+            # Structure the parameters correctly
+            custom_params = {}
+
+            # Add all form fields directly to custom_params
+            for key, value in form_data.items():
+                custom_params[key] = value
+
+            run = api_client.run_experiment(exp["id"], custom_params)
+            if run:
+                st.session_state.current_run = run
+                st.rerun()
 
 # Running experiment view
 if st.session_state.current_run and not st.session_state.show_results:

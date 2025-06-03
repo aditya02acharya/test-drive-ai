@@ -32,10 +32,16 @@ class APIClient:
             st.error(f"Failed to fetch experiment: {e!s}")
             return None
 
-    def run_experiment(self, experiment_id: str) -> Optional[dict[str, Any]]:
+    def run_experiment(
+        self, experiment_id: str, custom_params: Optional[dict[str, Any]] = None
+    ) -> Optional[dict[str, Any]]:
         """Start running an experiment"""
         try:
-            response = self.session.post(f"{self.base_url}/experiments/{experiment_id}/run")
+            payload = {}
+            if custom_params:
+                payload = {"custom_parameters": custom_params}
+
+            response = self.session.post(f"{self.base_url}/experiments/{experiment_id}/run", json=payload)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:

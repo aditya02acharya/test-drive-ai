@@ -39,6 +39,12 @@ class Experiment(BaseModel):
         json_encoders: ClassVar[dict] = {datetime: lambda v: v.isoformat()}
 
 
+class ExperimentRunRequest(BaseModel):
+    """Request model for running an experiment"""
+
+    custom_parameters: Optional[dict[str, Any]] = None
+
+
 class ExperimentRun(BaseModel):
     """Model for a running experiment instance"""
 
@@ -51,6 +57,7 @@ class ExperimentRun(BaseModel):
     completed_at: Optional[datetime] = None
     error_message: Optional[str] = None
     results: Optional[dict[str, Any]] = None
+    custom_parameters: Optional[dict[str, Any]] = None
 
     class Config:
         json_encoders: ClassVar[dict] = {datetime: lambda v: v.isoformat()}

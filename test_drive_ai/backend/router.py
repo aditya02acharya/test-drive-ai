@@ -1,10 +1,17 @@
 import asyncio
 import json
+from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request
 from sse_starlette.sse import EventSourceResponse
 
-from test_drive_ai.backend.experiment_schema import Experiment, ExperimentResult, ExperimentRun, ExperimentStatus
+from test_drive_ai.backend.experiment_schema import (
+    Experiment,
+    ExperimentResult,
+    ExperimentRun,
+    ExperimentRunRequest,
+    ExperimentStatus,
+)
 
 router = APIRouter(prefix="/experiments", tags=["experiments"])
 
@@ -27,8 +34,13 @@ async def get_experiment(experiment_id: str, request: Request):
 
 
 @router.post("/{experiment_id}/run", response_model=ExperimentRun)
-async def run_experiment(experiment_id: str, request: Request, background_tasks: BackgroundTasks):
-    """Start running an experiment"""
+async def run_experiment(
+    experiment_id: str,
+    request: Request,
+    background_tasks: BackgroundTasks,
+    run_request: Optional[ExperimentRunRequest] = None,
+):
+    """Start running an experiment with optional custom parameters"""
     experiment_service = request.app.state.experiment_service
     simulation_service = request.app.state.simulation_service
     task_manager = request.app.state.task_manager
@@ -37,17 +49,56 @@ async def run_experiment(experiment_id: str, request: Request, background_tasks:
     if not experiment:
         raise HTTPException(status_code=404, detail="Experiment not found")
 
-    # Create a new run
-    run = experiment_service.create_experiment_run(experiment_id)
+    # Extract custom parameters if provided
+    custom_params = None
+    if run_request and run_request.custom_parameters:
+        custom_params = run_request.custom_parameters
+
+    # Create a new run with custom parameters
+    run = experiment_service.create_experiment_run(experiment_id, custom_params)
+
+    # Merge custom parameters with default config
+    config = experiment.config.dict()
+    if custom_params:
+        # Create a deep copy to avoid modifying the original
+        import copy
+
+        config = copy.deepcopy(config)
+
+        # Update only the parameters that exist in the original config
+        for key, value in custom_params.items():
+            if key in config["parameters"] and key != "parameters":
+                # Handle special cases like interventions
+                if key == "interventions" and isinstance(config["parameters"][key], list):
+                    # If original interventions were list of dicts, extract names
+                    if config["parameters"][key] and isinstance(config["parameters"][key][0], dict):
+                        # Keep the dict structure but filter based on selected names
+                        original_interventions = config["parameters"][key]
+                        if isinstance(value, list) and all(isinstance(v, str) for v in value):
+                            # Filter original interventions by selected names
+                            config["parameters"][key] = [
+                                inter for inter in original_interventions if inter.get("name") in value
+                            ]
+                        else:
+                            config["parameters"][key] = value
+                    else:
+                        config["parameters"][key] = value
+                else:
+                    config["parameters"][key] = value
+
+        # Add custom context fields
+        config["custom_context"] = {
+            "additional_context": custom_params.get("additional_context", ""),
+            "success_criteria": custom_params.get("success_criteria", ""),
+            "old_portal_info": custom_params.get("old_portal_info", ""),
+            "new_portal_info": custom_params.get("new_portal_info", ""),
+            "random_seed": custom_params.get("random_seed", 42),
+            "confidence_level": custom_params.get("confidence_level", 0.95),
+        }
 
     # Start the experiment in background
     background_tasks.add_task(
-        task_manager.run_experiment,
-        experiment_id,
-        run.run_id,
-        experiment.config.dict(),
-        experiment_service,
-        simulation_service,
+        task_manager.run_experiment, experiment_id, run.run_id, config, experiment_service, simulation_service
     )
 
     return run
