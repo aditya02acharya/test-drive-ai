@@ -6,7 +6,77 @@ import streamlit as st
 
 def render_dashboard(results: dict[str, Any]) -> None:
     """Render the dashboard with experiment results."""
-    st.title("## 📊 Experiment Dashboard")
+    # Add Barclays-themed dashboard styling
+    st.markdown(
+        """
+        <style>
+        .dashboard-title {
+            color: #0086BF;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #0086BF;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00AEEF;
+            padding-left: 12px;
+        }
+
+        .stInfo {
+            background-color: #E6F4FF;
+            border-left: 4px solid #00AEEF;
+            border-radius: 4px;
+        }
+
+        .stMetric {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .stMetric:hover {
+            box-shadow: 0 4px 12px rgba(0, 134, 191, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .recommendations li {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        .recommendations li::marker {
+            color: #00AEEF;
+        }
+
+        .streamlit-expanderHeader {
+            background-color: #f8f9fa !important;
+            color: #0086BF !important;
+        }
+
+        .streamlit-expanderHeader:hover {
+            color: #00AEEF !important;
+        }
+
+        button:hover, a:hover {
+            color: #00AEEF !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<h2 class="dashboard-title">📊 Experiment Dashboard</h2>', unsafe_allow_html=True)
 
     # Summary section
     st.markdown("### Experiment Summary")

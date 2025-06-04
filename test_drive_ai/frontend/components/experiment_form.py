@@ -15,6 +15,115 @@ def render_experiment_form(experiment: dict[str, Any]) -> dict[str, Any]:  # noq
         Dict containing the form values
     """
 
+    st.markdown(
+        """
+        <style>
+        /* Form styling with Barclays theme */
+        .stForm {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea,
+        .stNumberInput > div > div > input,
+        .stSelectbox > div > div > select,
+        .stMultiSelect > div > div > div {
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            transition: border-color 0.2s ease;
+        }
+
+        .stTextInput > div > div > input:focus,
+        .stTextArea > div > div > textarea:focus,
+        .stNumberInput > div > div > input:focus,
+        .stSelectbox > div > div > select:focus,
+        .stMultiSelect > div > div > div:focus-within {
+            border-color: #00AEEF;
+            box-shadow: 0 0 0 2px rgba(0, 174, 239, 0.1);
+        }
+
+        /* Fix dropdown hover colors */
+        .stSelectbox > div > div > div[data-baseweb="select"] > div:first-child:hover,
+        .stMultiSelect > div > div > div > div:first-child:hover {
+            border-color: #00AEEF !important;
+        }
+
+        /* Fix dropdown option colors */
+        [data-baseweb="menu"] [role="option"]:hover {
+            background-color: #E6F4FF !important;
+            color: #0086BF !important;
+        }
+
+        [data-baseweb="menu"] [role="option"][aria-selected="true"] {
+            background-color: #00AEEF !important;
+            color: white !important;
+        }
+
+        /* Fix multiselect tag colors */
+        .stMultiSelect [data-baseweb="tag"] {
+            background-color: #00AEEF !important;
+            color: white !important;
+        }
+
+        .stCheckbox > label {
+            color: #1a1a1a;
+        }
+
+        .stCheckbox > label > div[data-testid="stCheckbox"] > label {
+            color: #1a1a1a !important;
+        }
+
+        /* Fix form submit button */
+        .stForm [data-testid="stFormSubmitButton"] > button {
+            background-color: #00AEEF !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 600 !important;
+        }
+
+        .stForm [data-testid="stFormSubmitButton"] > button:hover {
+            background-color: #0086BF !important;
+            color: white !important;
+        }
+
+        .stExpander {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .stExpander > div > div > div > div {
+            color: #0086BF;
+            font-weight: 600;
+        }
+
+        h4 {
+            color: #0086BF;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #00AEEF;
+            padding-bottom: 8px;
+        }
+
+        /* Fix slider colors */
+        .stSlider > div > div > div > div {
+            background-color: #00AEEF !important;
+        }
+
+        .stSlider > div > div > div > div > div {
+            background-color: #00AEEF !important;
+            border-color: #0086BF !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.markdown("### ⚙️ Experiment Configuration")
 
     # Initialize form data in session state if not exists

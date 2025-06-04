@@ -13,26 +13,50 @@ def render_status_tracker(
     status_style = """
     <style>
     .status-container {
-        border: 1px solid #ddd;
+        border: 2px solid #00AEEF;
         border-radius: 10px;
-        padding: 20px;
+        padding: 24px;
         margin: 20px 0;
-        background-color: #f9f9f9;
+        background-color: #f8fcff;
+        box-shadow: 0 4px 12px rgba(0, 174, 239, 0.1);
     }
     .status-header {
         font-size: 1.3em;
         font-weight: bold;
         margin-bottom: 15px;
-        color: #333;
+        color: #0086BF;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
     .status-step {
         font-size: 1.1em;
-        color: #666;
-        margin: 10px 0;
+        color: #666666;
+        margin: 15px 0;
+        padding: 10px;
+        background-color: white;
+        border-radius: 6px;
+        border-left: 4px solid #00AEEF;
     }
     .status-icon {
         display: inline-block;
         margin-right: 10px;
+        font-size: 1.2em;
+    }
+    .stProgress > div > div > div > div {
+        background-color: #00AEEF !important;
+    }
+    .status-info {
+        color: #1a1a1a;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+
+    [data-testid="stProgress"] > div {
+        background-color: #e0e0e0;
+    }
+    [data-testid="stProgress"] > div > div {
+        background-color: #00AEEF !important;
     }
     </style>
     """
